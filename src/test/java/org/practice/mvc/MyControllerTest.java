@@ -1,20 +1,22 @@
-package org.practice;
+package org.practice.mvc;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.test.web.servlet.setup.StandaloneMockMvcBuilder;
 
-import static org.springframework.test.web.servlet.MockMvc.*;
+import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 
 /**
- * Created by jitendra on 7/31/16.
+ * Created by Jitendra on 7/31/16.
  */
 
 
@@ -30,7 +32,14 @@ public class MyControllerTest {
     }
 
     @Test
-    public void test() throws Exception {
+    public void test1() throws Exception {
         mockMvc.perform(get("/test")).andDo(print());
+    }
+
+    @Test
+    public void test2() throws Exception {
+        mockMvc.perform(post("/test").content("{\"title\":\"Test Blog Title\"}").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.title", is("Test Blog Title")))
+                .andDo(print());
     }
 }
